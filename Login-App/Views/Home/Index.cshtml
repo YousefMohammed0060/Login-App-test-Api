@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Login page</h2>
+<div class="row">
+    <form class="form-check-inline float-start" asp-controller="Home" asp-action="Login" style="padding-right: 25px; width:400px">
+        <input style="margin:5px 5px 5px 5px" name="userName" type="text" class="form-control my-2 my-lg-0" placeholder="Username" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input style="margin:5px 5px 5px 5px" name="password" type="password" class="form-control my-2 my-lg-0" placeholder="Password" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button style="margin:5px 5px 5px 5px" class="btn btn-outline-success my-2 my-lg-0 float-start" type="submit">Login</button>
+    </form>
+</div>
