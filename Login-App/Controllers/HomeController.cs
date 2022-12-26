@@ -1,6 +1,7 @@
 ﻿using Login_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
@@ -18,12 +19,6 @@ namespace Login_App.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = BASE_URL;
-            responseMessage = client.GetAsync(BASE_URL + "api/users").Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string data = responseMessage.Content.ReadAsStringAsync().Result;
-                result = JsonConvert.DeserializeObject<List<Users>>(data);
-            }
         }
 
         public IActionResult Index()
@@ -33,6 +28,7 @@ namespace Login_App.Controllers
 
         public IActionResult Login(string userName, string password)
         {
+            getReq();
             foreach (var item in result)
             {
                 if (item.UserName.Equals(userName) && item.Password.Equals(password))
@@ -43,5 +39,29 @@ namespace Login_App.Controllers
             return View("NotFound");
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult Create(string name, string userName, string password)
+        {
+            var Client = new RestClient(BASE_URL + "api/users");
+            var request = new RestRequest();
+            var user = new Users { Name = name, UserName = userName, Password = password };
+            request.AddJsonBody(user);
+            Client.Post(request);
+            return View("Index");
+        }
+
+        public void getReq()
+        {
+            responseMessage = client.GetAsync(BASE_URL + "api/users").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string data = responseMessage.Content.ReadAsStringAsync().Result;
+                result = JsonConvert.DeserializeObject<List<Users>>(data);
+            }
+        }
     }
 }
